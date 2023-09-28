@@ -114,6 +114,16 @@ ADD https://github.com/harfbuzz/harfbuzz.git#$HARFBUZZ_BRANCH /src
 COPY build/harfbuzz.sh /src/build.sh
 RUN bash -x /src/build.sh
 
+# Build librubberband
+FROM emsdk-base AS librubberband-builder
+ENV LIBSAMPLERATE_BRANCH=0.2.2
+ENV LIBSNDFILE_BRANCH=1.2.2
+ADD https://github.com/libsndfile/libsamplerate.git#$LIBSAMPLERATE_BRANCH /src/modules/libsamplerate
+ADD https://github.com/libsndfile/libsndfile.git#$LIBSAMPLERATE_BRANCH /src/modules/libsndfile
+ADD https://github.com/breakfastquay/rubberband.git#$HARFBUZZ_BRANCH /src/modules/rubberband
+COPY build/rubberband.sh /src/build.sh
+RUN bash -x /src/build.sh
+
 # Build libass
 FROM emsdk-base AS libass-builder
 COPY --from=freetype2-builder $INSTALL_DIR $INSTALL_DIR
